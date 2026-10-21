@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StabilityLab — System Stability Tester</title>
+<meta name="description" content="Professional Control Systems Analysis Tool - Analyze transfer functions, stability, step response, Bode plots, and root locus">
+<meta name="theme-color" content="#0d1624">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="StabilityLab">
+<style>
+:root{--bg:#080d17;--panel:#101a2a;--panel2:#0c1422;--line:#233149;--text:#edf4ff;--muted:#8fa1bc;--blue:#4b8dff;--cyan:#35d5e8;--green:#36d399;--amber:#f6bd4b;--red:#ff647c;--purple:#b39aff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 70% -15%,#182b4c 0,transparent 43%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}
+.app{display:grid;grid-template-columns:242px minmax(0,1fr);min-height:100vh}.sidebar{background:#09111f;border-right:1px solid var(--line);padding:22px 15px;display:flex;flex-direction:column;gap:28px}.brand{display:flex;align-items:center;gap:12px;padding:0 8px}.brand-mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4b8dff,#31d4e7);display:grid;place-items:center;color:#07111f;font-weight:900;font-size:20px;box-shadow:0 7px 25px #328cff30}.brand strong{display:block;font-size:15px;letter-spacing:.3px}.brand small{color:var(--muted);font-size:10px;letter-spacing:1.6px}.nav-label{color:#637692;font-size:10px;font-weight:800;letter-spacing:1.6px;padding:0 12px;margin-bottom:7px}.nav{display:grid;gap:5px}.nav button{border:1px solid transparent;background:transparent;color:#91a4c0;padding:11px 12px;border-radius:10px;text-align:left;display:flex;align-items:center;gap:12px;transition:.15s}.nav button:hover{background:#111e31;color:#eaf3ff}.nav button.active{background:linear-gradient(90deg,#1a3760,#14233a);border-color:#284a7a;color:white}.nav .ico{width:20px;text-align:center;font-size:16px}.side-bottom{margin-top:auto;background:#0e1a2a;border:1px solid var(--line);padding:14px;border-radius:12px}.side-bottom strong{font-size:12px}.side-bottom p{color:var(--muted);font-size:11px;margin:6px 0 0}.online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px;box-shadow:0 0 10px #36d39980}
+main{padding:26px clamp(16px,2.5vw,38px) 40px;min-width:0;max-width:1800px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:26px}.eyebrow{font-size:10px;color:var(--cyan);font-weight:800;letter-spacing:2px;text-transform:uppercase}.topbar h1{font-size:clamp(24px,2.2vw,34px);letter-spacing:-.8px;margin:5px 0 2px}.sub{color:var(--muted);margin:0}.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:#0d1726;color:#b8c8df;padding:8px 11px;border-radius:999px;font-size:11px;white-space:nowrap}.button{border:1px solid var(--line);border-radius:9px;padding:10px 14px;color:var(--text);background:#142137;font-weight:700;transition:.15s}.button:hover{filter:brightness(1.15);transform:translateY(-1px)}.button.primary{background:linear-gradient(135deg,#3679ed,#2761ca);border-color:#5790ff;box-shadow:0 7px 22px #2367d52a}.button.ghost{background:transparent}.button.danger{color:#ffb5c0;border-color:#6d2e40;background:#2a1420}.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.7fr);gap:16px;margin-bottom:16px}.panel{background:linear-gradient(145deg,#111c2d,#0d1624);border:1px solid var(--line);border-radius:15px;min-width:0;box-shadow:0 12px 30px #00000013}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:17px 19px 0}.panel-head h2{font-size:14px;margin:0;font-weight:750}.panel-head p{font-size:11px;color:var(--muted);margin:4px 0 0}.panel-body{padding:17px 19px 19px}.tag{font-size:10px;color:#b8c8df;border:1px solid #2a3a52;background:#142136;padding:4px 8px;border-radius:6px;white-space:nowrap}.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field label{display:block;color:#a8b8ce;font-size:11px;font-weight:700;margin-bottom:6px}.field input,.field select{width:100%;background:#080f1b;border:1px solid #293a53;border-radius:8px;color:#f1f6ff;padding:11px 12px;outline:none;min-width:0}.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #4b8dff1c}.field small{display:block;color:#6f829f;font-size:10px;margin-top:5px}.actions-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.formula{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#a8d9ff;background:#08111e;border:1px solid #1c3048;border-radius:8px;padding:10px 12px;margin-top:13px;overflow-wrap:anywhere}.status-panel{position:relative;overflow:hidden}.status-panel:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;border:1px solid #294769;right:-70px;bottom:-95px;box-shadow:0 0 0 20px #13253a,0 0 0 40px #101f31}.status-inner{position:relative;z-index:1;padding:20px;height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:20px}.status-label{font-size:10px;letter-spacing:1.6px;color:var(--muted);font-weight:800}.status-title{font-size:27px;font-weight:850;letter-spacing:-.7px;margin:8px 0}.status-title.stable{color:var(--green)}.status-title.marginal{color:var(--amber)}.status-title.unstable{color:var(--red)}.status-desc{font-size:12px;color:#a9bad0;max-width:300px}.status-foot{display:flex;gap:20px;border-top:1px solid var(--line);padding-top:14px}.status-foot span{font-size:10px;color:var(--muted);display:block}.status-foot strong{font-size:15px;display:block;margin-top:2px}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:16px}.metric{padding:15px 16px;position:relative;overflow:hidden}.metric:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--blue))}.metric-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:11px}.metric-icon{color:var(--accent,var(--blue));font-size:16px}.metric-value{font-size:25px;font-weight:800;letter-spacing:-.7px;margin:10px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.metric-foot{font-size:10px;color:#7285a1}.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}.chart-panel{min-height:300px}.chart-wrap{height:240px;padding:8px 14px 14px;position:relative}.chart-wrap canvas{width:100%;height:100%;display:block}.chart-meta{font-size:10px;color:#7f91ac}.bottom-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}.table-wrap{overflow:auto;padding:0 19px 18px}.routh{border-collapse:collapse;width:100%;font:12px ui-monospace,Consolas,monospace}.routh th,.routh td{padding:9px 12px;border-bottom:1px solid #202e43;text-align:right;white-space:nowrap}.routh th:first-child,.routh td:first-child{text-align:left;color:#a8bed9}.routh th{color:#7f93b0;font-size:10px;text-transform:uppercase;letter-spacing:1px}.routh tr:last-child td{border-bottom:0}.log{height:220px;overflow:auto;background:#080f1a;border:1px solid #1e2b40;border-radius:9px;padding:10px 12px;font:11px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.logline{display:flex;gap:10px}.logtime{color:#526986;flex:none}.logmsg{color:#a8bad2}.logmsg.ok{color:var(--green)}.logmsg.warn{color:var(--amber)}.logmsg.err{color:var(--red)}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#526783;font-size:10px;padding:18px 3px 0}.hidden{display:none!important}.toast{position:fixed;right:22px;bottom:22px;background:#14243a;border:1px solid #35567d;padding:12px 16px;border-radius:10px;box-shadow:0 15px 40px #0008;max-width:340px;z-index:10;color:#e8f2ff}.nav-view{display:none}.nav-view.active{display:block}.section-intro{margin:0 0 14px;color:var(--muted);font-size:12px}.two-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:1100px){.app{grid-template-columns:200px minmax(0,1fr)}.hero{grid-template-columns:1fr}.status-inner{min-height:200px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.charts,.bottom-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.app{display:block}.sidebar{position:relative;padding:13px;gap:14px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:0 4px}.nav-label,.side-bottom{display:none}.nav{display:flex;overflow:auto;padding-bottom:2px}.nav button{white-space:nowrap;padding:9px 11px}.nav .ico{display:none}main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.input-grid,.two-inputs{grid-template-columns:1fr}.metrics{gap:9px}.metric{padding:12px}.metric-value{font-size:21px}.panel-head,.panel-body{padding-left:14px;padding-right:14px}.chart-wrap{height:220px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">∿</div><div><strong>StabilityLab</strong><small>CONTROL SYSTEMS</small></div></div>
+  <div><div class="nav-label">WORKSPACE</div><nav class="nav" id="nav">
+    <button class="active" data-view="overview"><span class="ico">◫</span>Overview</button>
+    <button data-view="compare"><span class="ico">⚖</span>Compare Systems</button>
+    <button data-view="monitor"><span class="ico">📊</span>Auto Monitor</button>
+    <button data-view="analysis"><span class="ico">⌘</span>System analysis</button>
+    <button data-view="root"><span class="ico">◎</span>Root locus</button>
+    <button data-view="bode"><span class="ico">∿</span>Bode response</button>
+    <button data-view="step"><span class="ico">↗</span>Step response</button>
+    <button data-view="routh"><span class="ico">▦</span>Routh-Hurwitz</button>
+  </nav></div>
+  <div class="side-bottom"><strong><span class="online-dot"></span>Local analysis engine</strong><p>Calculations run in your browser. Your model data stays on this device.</p></div>
+</aside>
+<main>
+<header class="topbar">
+  <div><div class="eyebrow">ENGINEERING / DIAGNOSTICS</div><h1>System Stability Tester</h1><p class="sub">Analyze dynamic systems. Validate stability. Understand performance.</p></div>
+  <div class="top-actions"><span class="pill"><span class="online-dot"></span>ENGINE READY</span><button class="button ghost" id="exportBtn">Export results ↗</button><button class="button primary" id="runTop">▶ Run analysis</button></div>
+</header>
+
+<section class="nav-view active" id="view-overview">
+  <div class="hero">
+    <section class="panel"><div class="panel-head"><div><h2>System model</h2><p>Enter the transfer function coefficients in descending powers of s.</p></div><span class="tag">CONTINUOUS-TIME</span></div>
+      <div class="panel-body">
+        <div class="input-grid">
+          <div class="field"><label for="num">Numerator coefficients</label><input id="num" value="1" spellcheck="false"><small>Example: 1, 3 means s + 3</small></div>
+          <div class="field"><label for="den">Denominator coefficients</label><input id="den" value="1, 3, 2" spellcheck="false"><small>Example: 1, 3, 2 means s² + 3s + 2</small></div>
+          <div class="field"><label for="duration">Step simulation duration (s)</label><input id="duration" type="number" min="0.1" max="200" step="0.5" value="10"></div>
+          <div class="field"><label for="samples">Simulation samples</label><select id="samples"><option value="200">200 — fast</option><option value="500" selected>500 — balanced</option><option value="1000">1000 — detailed</option></select></div>
+        </div>
+        <div class="formula" id="formula">G(s) = 1 / (s² + 3s + 2)</div>
+        <div class="actions-row"><button class="button primary" id="runBtn">▶ Run analysis</button><button class="button" id="demoBtn">Load example</button><button class="button ghost" id="resetBtn">Reset</button></div>
+      </div>
+    </section>
+    <section class="panel status-panel"><div class="status-inner"><div><div class="status-label">STABILITY ASSESSMENT</div><div class="status-title stable" id="statusTitle">STABLE</div><div class="status-desc" id="statusDesc">All poles are in the left half-plane. The natural response decays over time.</div></div><div class="status-foot"><div><span>Right-half-plane poles</span><strong id="rhpCount">0</strong></div><div><span>System order</span><strong id="orderVal">2</strong></div><div><span>Analysis state</span><strong id="analysisState">Complete</strong></div></div></div></section>
+  </div>
+  <div class="metrics">
+    <section class="panel metric" style="--accent:var(--cyan)"><div class="metric-top">POLES <span class="metric-icon">◎</span></div><div class="metric-value" id="polesMetric">2</div><div class="metric-foot" id="polesFoot">System modes</div></section>
+    <section class="panel metric" style="--accent:var(--purple)"><div class="metric-top">ZEROS <span class="metric-icon">⊙</span></div><div class="metric-value" id="zerosMetric">0</div><div class="metric-foot">Finite transmission zeros</div></section>
+    <section class="panel metric" style="--accent:var(--green)"><div class="metric-top">SETTLING TIME <span class="metric-icon">◷</span></div><div class="metric-value" id="settlingMetric">2.7 s</div><div class="metric-foot">2% band estimate from step response</div></section>
+    <section class="panel metric" style="--accent:var(--amber)"><div class="metric-top">OVERSHOOT <span class="metric-icon">↗</span></div><div class="metric-value" id="overshootMetric">0.0%</div><div class="metric-foot">Relative to final value</div></section>
+  </div>
+  <div class="charts">
+    <section class="panel chart-panel"><div class="panel-head"><div><h2>Pole-zero map</h2><p>Root locations on the complex plane</p></div><span class="tag">S-PLANE</span></div><div class="chart-wrap"><canvas id="pzCanvas" aria-label="Pole zero plot"></canvas></div></section>
+    <section class="panel chart-panel"><div class="panel-head"><div><h2>Unit-step response</h2><p>Output response over time</p></div><span class="tag">TIME DOMAIN</span></div><div class="chart-wrap"><canvas id="stepCanvas" aria-label="Step response plot"></canvas></div></section>
+  </div>
+  <div class="bottom-grid">
+    <section class="panel"><div class="panel-head"><div><h2>Routh-Hurwitz table</h2><p>First-column sign test for right-half-plane roots</p></div><span class="tag">STABILITY TEST</span></div><div class="table-wrap" id="routhPreview"></div></section>
+    <section class="panel"><div class="panel-head"><div><h2>Analysis console</h2><p>Validation events and calculation summary</p></div><button class="button ghost" id="clearLog" style="padding:5px 8px;font-size:10px">Clear</button></div><div class="panel-body" style="padding-top:12px"><div class="log" id="log"></div></div></section>
+  </div>
+</section>
+
+<section class="nav-view" id="view-compare">
+  <section class="panel" style="margin-bottom:16px">
+    <div class="panel-head"><div><h2>System Comparison Tool</h2><p>Compare multiple transfer functions simultaneously</p></div><span class="tag">MULTI-SYSTEM</span></div>
+    <div class="panel-body">
+      <p class="section-intro">Enter up to 4 systems to compare their stability, performance, and real-world applications.</p>
+      
+      <!-- System 1 -->
+      <div style="margin-bottom:20px;padding:15px;background:#0a1220;border:1px solid var(--line);border-radius:10px">
+        <h3 style="font-size:13px;color:var(--cyan);margin:0 0 12px;display:flex;align-items:center;gap:10px">
+          <span style="background:var(--cyan);color:#000;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold">1</span>
+          System 1
+        </h3>
+        <div class="input-grid" style="margin-bottom:12px">
+          <div class="field"><label for="comp1num">Numerator</label><input id="comp1num" value="1" spellcheck="false"></div>
+          <div class="field"><label for="comp1den">Denominator</label><input id="comp1den" value="1, 3, 2" spellcheck="false"></div>
+        </div>
+        <div class="field"><label for="comp1app">Application / Description</label><input id="comp1app" placeholder="e.g., Motor Speed Control, Temperature Regulation" value="Motor Speed Control System"></div>
+      </div>
+
+      <!-- System 2 -->
+      <div style="margin-bottom:20px;padding:15px;background:#0a1220;border:1px solid var(--line);border-radius:10px">
+        <h3 style="font-size:13px;color:var(--purple);margin:0 0 12px;display:flex;align-items:center;gap:10px">
+          <span style="background:var(--purple);color:#000;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold">2</span>
+          System 2
+        </h3>
+        <div class="input-grid" style="margin-bottom:12px">
+          <div class="field"><label for="comp2num">Numerator</label><input id="comp2num" value="1" spellcheck="false"></div>
+          <div class="field"><label for="comp2den">Denominator</label><input id="comp2den" value="1, 0.5, 1" spellcheck="false"></div>
+        </div>
+        <div class="field"><label for="comp2app">Application / Description</label><input id="comp2app" placeholder="e.g., Aircraft Autopilot, Position Servo" value="Suspension Damping System"></div>
+      </div>
+
+      <!-- System 3 -->
+      <div style="margin-bottom:20px;padding:15px;background:#0a1220;border:1px solid var(--line);border-radius:10px">
+        <h3 style="font-size:13px;color:var(--amber);margin:0 0 12px;display:flex;align-items:center;gap:10px">
+          <span style="background:var(--amber);color:#000;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold">3</span>
+          System 3 <span style="font-size:10px;color:var(--muted);font-weight:normal">(Optional)</span>
+        </h3>
+        <div class="input-grid" style="margin-bottom:12px">
+          <div class="field"><label for="comp3num">Numerator</label><input id="comp3num" placeholder="Leave empty to skip" spellcheck="false"></div>
+          <div class="field"><label for="comp3den">Denominator</label><input id="comp3den" placeholder="Leave empty to skip" spellcheck="false"></div>
+        </div>
+        <div class="field"><label for="comp3app">Application / Description</label><input id="comp3app" placeholder="e.g., Voltage Regulator, Flow Control"></div>
+      </div>
+
+      <!-- System 4 -->
+      <div style="margin-bottom:20px;padding:15px;background:#0a1220;border:1px solid var(--line);border-radius:10px">
+        <h3 style="font-size:13px;color:var(--green);margin:0 0 12px;display:flex;align-items:center;gap:10px">
+          <span style="background:var(--green);color:#000;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold">4</span>
+          System 4 <span style="font-size:10px;color:var(--muted);font-weight:normal">(Optional)</span>
+        </h3>
+        <div class="input-grid" style="margin-bottom:12px">
+          <div class="field"><label for="comp4num">Numerator</label><input id="comp4num" placeholder="Leave empty to skip" spellcheck="false"></div>
+          <div class="field"><label for="comp4den">Denominator</label><input id="comp4den" placeholder="Leave empty to skip" spellcheck="false"></div>
+        </div>
+        <div class="field"><label for="comp4app">Application / Description</label><input id="comp4app" placeholder="e.g., Process Control, Power Converter"></div>
+      </div>
+
+      <div class="actions-row">
+        <button class="button primary" id="compareBtn">⚖ Compare Systems</button>
+        <button class="button" id="loadExamplesBtn">Load Examples</button>
+        <button class="button ghost" id="clearCompareBtn">Clear All</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Results -->
+  <div id="comparisonResults" class="hidden">
+    <section class="panel" style="margin-bottom:16px">
+      <div class="panel-head"><div><h2>Comparison Results</h2><p>Side-by-side analysis of systems</p></div><span class="tag">SUMMARY</span></div>
+      <div class="panel-body">
+        <div class="table-wrap">
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <thead>
+              <tr style="border-bottom:2px solid var(--line)">
+                <th style="text-align:left;padding:12px;color:var(--muted);font-size:11px">PROPERTY</th>
+                <th style="text-align:center;padding:12px;color:var(--cyan);font-size:11px">SYSTEM 1</th>
+                <th style="text-align:center;padding:12px;color:var(--purple);font-size:11px">SYSTEM 2</th>
+                <th style="text-align:center;padding:12px;color:var(--amber);font-size:11px">SYSTEM 3</th>
+                <th style="text-align:center;padding:12px;color:var(--green);font-size:11px">SYSTEM 4</th>
+              </tr>
+            </thead>
+            <tbody id="comparisonTableBody" style="color:var(--text)">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed System Cards -->
+    <div id="systemCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+    </div>
+
+    <!-- Step Response Comparison Chart -->
+    <section class="panel" style="margin-top:16px">
+      <div class="panel-head"><div><h2>Step Response Comparison</h2><p>Overlay of all system responses</p></div><span class="tag">TIME DOMAIN</span></div>
+      <div class="chart-wrap" style="height:400px"><canvas id="compareStepCanvas"></canvas></div>
+    </section>
+  </div>
+</section>
+
+<section class="nav-view" id="view-monitor">
+  <section class="panel" style="margin-bottom:16px">
+    <div class="panel-head"><div><h2>Automated Monitoring System</h2><p>Connect devices and monitor stability continuously</p></div><span class="tag">IOT / AUTO</span></div>
+    <div class="panel-body">
+      <p class="section-intro">Connect to external devices, sensors, or controllers. The system will automatically receive data at specified intervals, analyze stability, and track statistics over time.</p>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <!-- Configuration Panel -->
+        <div style="padding:15px;background:#0a1220;border:1px solid var(--line);border-radius:10px">
+          <h3 style="font-size:13px;color:var(--cyan);margin:0 0 15px">⚙️ Configuration</h3>
+          
+          <div class="field" style="margin-bottom:12px">
+            <label for="monitorInterval">Monitoring Interval</label>
+            <select id="monitorInterval">
+              <option value="1000">Every 1 second</option>
+              <option value="2000">Every 2 seconds</option>
+              <option value="5000" selected>Every 5 seconds</option>
+              <option value="10000">Every 10 seconds</option>
+              <option value="30000">Every 30 seconds</option>
+              <option value="60000">Every 1 minute</option>
+            </select>
+          </div>
+          
+          <div class="field" style="margin-bottom:12px">
+            <label for="dataSource">Data Source</label>
+            <select id="dataSource">
+              <option value="manual">Manual Input</option>
+              <option value="random">Random Generator (Demo)</option>
+              <option value="serial">Serial Port Device</option>
+              <option value="websocket">WebSocket Server</option>
+              <option value="api">REST API Endpoint</option>
+            </select>
+            <small>Serial/WebSocket/API require additional setup</small>
+          </div>
+          
+          <div class="field" style="margin-bottom:12px">
+            <label for="deviceEndpoint">Device Endpoint / Port</label>
+            <input id="deviceEndpoint" placeholder="e.g., COM3, ws://localhost:8080, http://api.example.com" value="">
+            <small>Enter connection details for your device</small>
+          </div>
+
+          <div class="field">
+            <label for="maxSamples">Maximum Samples to Track</label>
+            <input id="maxSamples" type="number" value="100" min="10" max="1000">
+            <small>How many readings to keep in history</small>
+          </div>
+        </div>
+
+        <!-- Status Panel -->
+        <div style="padding:15px;background:#0a1220;border:1px solid var(--line);border-radius:10px">
+          <h3 style="font-size:13px;color:var(--purple);margin:0 0 15px">📊 Monitoring Status</h3>
+          
+          <div style="display:grid;gap:10px">
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#080f1b;border-radius:6px">
+              <span style="color:var(--muted);font-size:11px">Status:</span>
+              <strong id="monitorStatus" style="color:var(--muted)">Stopped</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#080f1b;border-radius:6px">
+              <span style="color:var(--muted);font-size:11px">Total Readings:</span>
+              <strong id="totalReadings">0</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#080f1b;border-radius:6px">
+              <span style="color:var(--muted);font-size:11px">Last Update:</span>
+              <strong id="lastUpdate">Never</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px;background:#080f1b;border-radius:6px">
+              <span style="color:var(--muted);font-size:11px">Connected Device:</span>
+              <strong id="deviceStatus" style="font-size:10px">Not connected</strong>
+            </div>
+          </div>
+
+          <div style="margin-top:15px;display:flex;gap:8px">
+            <button class="button primary" id="startMonitorBtn" style="flex:1">▶ Start Monitoring</button>
+            <button class="button danger" id="stopMonitorBtn" style="flex:1" disabled>⏹ Stop</button>
+          </div>
+          
+          <button class="button ghost" id="clearMonitorBtn" style="width:100%;margin-top:8px">🗑 Clear History</button>
+        </div>
+      </div>
+
+      <!-- Statistics Dashboard -->
+      <div style="margin-bottom:20px">
+        <h3 style="font-size:13px;color:var(--amber);margin:0 0 12px">📈 Stability Statistics</h3>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+          <div class="panel metric" style="--accent:var(--green)">
+            <div class="metric-top">STABLE</div>
+            <div class="metric-value" id="stableCount">0</div>
+            <div class="metric-foot" id="stablePercent">0%</div>
+          </div>
+          <div class="panel metric" style="--accent:var(--amber)">
+            <div class="metric-top">MARGINAL</div>
+            <div class="metric-value" id="marginalCount">0</div>
+            <div class="metric-foot" id="marginalPercent">0%</div>
+          </div>
+          <div class="panel metric" style="--accent:var(--red)">
+            <div class="metric-top">UNSTABLE</div>
+            <div class="metric-value" id="unstableCount">0</div>
+            <div class="metric-foot" id="unstablePercent">0%</div>
+          </div>
+          <div class="panel metric" style="--accent:var(--cyan)">
+            <div class="metric-top">UPTIME</div>
+            <div class="metric-value" id="monitorUptime">0s</div>
+            <div class="metric-foot">Monitoring duration</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Data Display -->
+      <div style="padding:15px;background:#0a1220;border:1px solid var(--line);border-radius:10px;margin-bottom:16px">
+        <h3 style="font-size:13px;color:var(--green);margin:0 0 12px">🔴 Live Data Stream</h3>
+        <div id="liveDataDisplay" style="font-family:monospace;font-size:11px;background:#080f1b;padding:12px;border-radius:6px;height:120px;overflow-y:auto;color:var(--muted)">
+          Waiting for monitoring to start...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monitoring History Chart -->
+  <section class="panel" style="margin-bottom:16px">
+    <div class="panel-head"><div><h2>Stability Timeline</h2><p>Visual history of stability status over time</p></div><span class="tag">HISTORY</span></div>
+    <div class="chart-wrap" style="height:300px"><canvas id="timelineCanvas"></canvas></div>
+    <div class="panel-body chart-meta" id="timelineInfo">Start monitoring to see stability history over time</div>
+  </section>
+
+  <!-- Analysis History Table -->
+  <section class="panel">
+    <div class="panel-head">
+      <div><h2>Analysis History</h2><p>Detailed log of all analyzed systems</p></div>
+      <button class="button ghost" id="exportHistoryBtn" style="padding:5px 10px;font-size:11px">Export CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead>
+          <tr style="border-bottom:2px solid var(--line)">
+            <th style="text-align:left;padding:10px;color:var(--muted)">#</th>
+            <th style="text-align:left;padding:10px;color:var(--muted)">TIMESTAMP</th>
+            <th style="text-align:left;padding:10px;color:var(--muted)">TRANSFER FUNCTION</th>
+            <th style="text-align:center;padding:10px;color:var(--muted)">STABILITY</th>
+            <th style="text-align:center;padding:10px;color:var(--muted)">POLES</th>
+            <th style="text-align:center;padding:10px;color:var(--muted)">RHP POLES</th>
+            <th style="text-align:center;padding:10px;color:var(--muted)">SETTLING TIME</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody" style="color:var(--text)">
+          <tr>
+            <td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">No data yet. Start monitoring to collect data.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+<section class="nav-view" id="view-analysis"><section class="panel"><div class="panel-head"><div><h2>System analysis</h2><p>Model summary, poles, zeros and stability interpretation</p></div><span class="tag">ANALYSIS REPORT</span></div><div class="panel-body"><p class="section-intro">The system is treated as a continuous-time transfer function G(s) = N(s)/D(s). Coefficients must be entered in descending powers of s.</p><div class="metrics" style="margin:0 0 18px"><section class="panel metric"><div class="metric-top">STABILITY</div><div class="metric-value" id="analysisStability">STABLE</div></section><section class="panel metric"><div class="metric-top">POLES</div><div class="metric-value" id="analysisPoles">—</div></section><section class="panel metric"><div class="metric-top">ZEROS</div><div class="metric-value" id="analysisZeros">—</div></section><section class="panel metric"><div class="metric-top">DC GAIN</div><div class="metric-value" id="dcGain">—</div></section></div><h3 style="font-size:13px">Calculated poles</h3><div id="poleList" class="formula">Run analysis to calculate poles.</div><h3 style="font-size:13px;margin-top:22px">Calculated zeros</h3><div id="zeroList" class="formula">Run analysis to calculate zeros.</div></div></section></section>
+
+<section class="nav-view" id="view-root"><section class="panel"><div class="panel-head"><div><h2>Root locus</h2><p>Closed-loop poles for 1 + K·G(s) = 0, with unity negative feedback</p></div><span class="tag">GAIN SWEEP</span></div><div class="chart-wrap" style="height:min(60vh,520px)"><canvas id="rootCanvas"></canvas></div><div class="panel-body chart-meta">Gain K is swept logarithmically. Each trace is an approximate branch through computed roots; use the result for visualization and learning.</div></section></section>
+<section class="nav-view" id="view-bode"><section class="panel"><div class="panel-head"><div><h2>Bode response</h2><p>Frequency response of the entered open-loop transfer function</p></div><span class="tag">FREQUENCY DOMAIN</span></div><div class="chart-wrap" style="height:300px"><canvas id="bodeMag"></canvas></div><div class="chart-wrap" style="height:270px"><canvas id="bodePhase"></canvas></div><div class="panel-body chart-meta">Frequency axis is logarithmic. Magnitude is shown in dB and phase in degrees. This is a numerical evaluation of G(jω).</div></section></section>
+<section class="nav-view" id="view-step"><section class="panel"><div class="panel-head"><div><h2>Step response explorer</h2><p>Numerically simulated unit-step response</p></div><span class="tag">RK4 INTEGRATION</span></div><div class="chart-wrap" style="height:min(60vh,520px)"><canvas id="stepLarge"></canvas></div><div class="metrics" style="padding:0 19px 18px;margin:0"><section class="panel metric"><div class="metric-top">FINAL VALUE</div><div class="metric-value" id="finalMetric">—</div></section><section class="panel metric"><div class="metric-top">PEAK VALUE</div><div class="metric-value" id="peakMetric">—</div></section><section class="panel metric"><div class="metric-top">RISE TIME</div><div class="metric-value" id="riseMetric">—</div></section><section class="panel metric"><div class="metric-top">SETTLING TIME</div><div class="metric-value" id="settleLarge">—</div></section></div></section></section>
+<section class="nav-view" id="view-routh"><section class="panel"><div class="panel-head"><div><h2>Routh-Hurwitz stability table</h2><p>Constructed from the denominator polynomial</p></div><span class="tag">POLYNOMIAL TEST</span></div><div class="panel-body"><p class="section-intro">A sign change in the first column indicates a right-half-plane root. Special zero-row cases are handled with a small epsilon substitution and flagged in the console.</p><div id="routhFull"></div><div class="formula" id="routhInterpretation">Run analysis to view the interpretation.</div></div></section></section>
+<footer class="footer"><span>STABILITYLAB · PBL ENGINEERING PROJECT</span><span>Client-side numerical analysis · Not a certified design tool</span></footer>
+</main>
+</div>
+<div id="toast" class="toast hidden"></div>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const C = {grid:'#26364d',axis:'#7186a5',text:'#aabbd2',blue:'#4b8dff',cyan:'#35d5e8',green:'#36d399',amber:'#f6bd4b',red:'#ff647c',purple:'#b39aff'};
+let current = null, logCount = 0, toastTimer = null;
+const fmt = (x,d=3) => Number.isFinite(x) ? (Math.abs(x)<1e-10?0:x).toFixed(d).replace(/\.?0+$/,'') : '—';
+function log(msg,type=''){const row=document.createElement('div');row.className='logline';const t=document.createElement('span');t.className='logtime';t.textContent=new Date().toLocaleTimeString('en-GB',{hour12:false});const m=document.createElement('span');m.className='logmsg '+type;m.textContent=msg;row.append(t,m);$('log').append(row);$('log').scrollTop=$('log').scrollHeight;logCount++;}
+function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),3200);}
+function parseCoeffs(str,name){const a=str.trim().split(/[\s,;]+/).filter(Boolean).map(Number);if(!a.length||a.some(v=>!Number.isFinite(v)))throw Error(name+' must contain comma-separated finite numbers.');if(a[0]===0)throw Error(name+' leading coefficient cannot be zero.');let i=0;while(i<a.length-1&&Math.abs(a[i])<1e-14)i++;return a.slice(i);}
+function polyEval(p,z){let r={re:0,im:0};for(const a of p)r=cadd(cmul(r,z),{re:a,im:0});return r;}
+const cadd=(a,b)=>({re:a.re+b.re,im:a.im+b.im}), csub=(a,b)=>({re:a.re-b.re,im:a.im-b.im}), cmul=(a,b)=>({re:a.re*b.re-a.im*b.im,im:a.re*b.im+a.im*b.re}), cdiv=(a,b)=>{const d=b.re*b.re+b.im*b.im||1e-30;return{re:(a.re*b.re+a.im*b.im)/d,im:(a.im*b.re-a.re*b.im)/d}}, cabs=a=>Math.hypot(a.re,a.im);
+function roots(coeff){
+ let p=coeff.slice();while(p.length>1&&Math.abs(p[0])<1e-14)p.shift();const n=p.length-1;if(n===0)return[];p=p.map(x=>x/p[0]);if(n===1)return[{re:-p[1],im:0}];
+ // Durand-Kerner with scaled circular initial guesses.
+ const radius=1+Math.max(...p.slice(1).map(Math.abs));let r=Array.from({length:n},(_,k)=>({re:radius*Math.cos(2*Math.PI*k/n+.23),im:radius*Math.sin(2*Math.PI*k/n+.23)}));
+ for(let iter=0;iter<1500;iter++){let max=0;const next=r.map((z,i)=>{let den={re:1,im:0};for(let j=0;j<n;j++)if(j!==i)den=cmul(den,csub(z,r[j]));if(cabs(den)<1e-24)den={re:den.re+1e-12,im:den.im+1e-12};const delta=cdiv(polyEval(p,z),den);max=Math.max(max,cabs(delta));return csub(z,delta)});r=next;if(max<1e-11)break;}
+ return r.map(z=>Math.abs(z.im)<1e-7?{re:z.re,im:0}:z).sort((a,b)=>a.re-b.re||a.im-b.im);
+}
+function padNum(num,n){if(num.length>n+1)throw Error('Numerator degree cannot exceed denominator degree for this step-response simulator. Use a proper transfer function.');return Array(n+1-num.length).fill(0).concat(num);}
+function routhTable(coeff){
+ const p=coeff.slice(), n=p.length-1, cols=Math.ceil(p.length/2), eps=1e-9, table=Array.from({length:n+1},()=>Array(cols).fill(0)), flags=[];
+ for(let j=0;j<cols;j++){table[0][j]=p[2*j]||0;table[1]&&(table[1][j]=p[2*j+1]||0);}
+ for(let i=2;i<=n;i++){
+  if(table[i-1].every(v=>Math.abs(v)<eps)){flags.push('A complete zero row occurred; auxiliary-polynomial handling is approximate.');const prev=table[i-2];for(let j=0;j<cols;j++){const power=n-(i-2)-2*j;table[i-1][j]=power>0?prev[j]*power:0;}}
+  if(Math.abs(table[i-1][0])<eps){table[i-1][0]=eps;flags.push('A near-zero first-column element was replaced by ε for sign testing.');}
+  for(let j=0;j<cols-1;j++)table[i][j]=(table[i-1][0]*table[i-2][j+1]-table[i-2][0]*table[i-1][j+1])/table[i-1][0];
+ }
+ const first=table.map(row=>row[0]), signs=[];for(const v of first){if(Math.abs(v)>eps)signs.push(Math.sign(v));}
+ let changes=0;for(let i=1;i<signs.length;i++)if(signs[i]!==signs[i-1])changes++;
+ return{table,first,changes,flags};
+}
+function buildStateSpace(num,den){
+ const n=den.length-1;if(n<1)throw Error('Denominator must have degree 1 or higher.');const d0=den[0];den=den.map(x=>x/d0);num=padNum(num,n).map(x=>x/d0);
+ const D=num[0], C=num.slice(1).reverse().map((b,i)=>b-D*den.slice(1).reverse()[i]);
+ const A=Array.from({length:n},()=>Array(n).fill(0));for(let i=0;i<n-1;i++)A[i][i+1]=1;A[n-1]=den.slice(1).reverse().map(x=>-x);
+ const B=Array(n).fill(0);B[n-1]=1;return{A,B,C,D,n};
+}
+function deriv(x,ss,u){return ss.A.map((row,i)=>row.reduce((s,a,j)=>s+a*x[j],0)+ss.B[i]*u);}
+function addVec(x,k,f){return x.map((v,i)=>v+k*f[i]);}
+function stepResponse(num,den,duration,count){
+ const ss=buildStateSpace(num,den),dt=duration/(count-1),t=[],y=[];let x=Array(ss.n).fill(0);
+ for(let i=0;i<count;i++){const time=i*dt;t.push(time);y.push(ss.C.reduce((s,c,j)=>s+c*x[j],0)+ss.D);if(i===count-1)break;
+ const k1=deriv(x,ss,1),k2=deriv(addVec(x,dt/2,k1),ss,1),k3=deriv(addVec(x,dt/2,k2),ss,1),k4=deriv(addVec(x,dt,k3),ss,1);x=x.map((v,j)=>v+dt*(k1[j]+2*k2[j]+2*k3[j]+k4[j])/6);
+ if(x.some(v=>!Number.isFinite(v)||Math.abs(v)>1e12))throw Error('Step response diverged numerically. Try a shorter duration or inspect system stability.');
+ }return{t,y};
+}
+function metrics(resp,poles){const y=resp.y,t=resp.t,final=y[y.length-1],peak=Math.max(...y),min=Math.min(...y),overshoot=Math.abs(final)>1e-8?Math.max(0,(peak-final)/Math.abs(final)*100):NaN;let settle=NaN,rise=NaN;
+ if(Number.isFinite(final)){for(let i=y.length-1;i>=0;i--){if(Math.abs(y[i]-final)>0.02*Math.max(Math.abs(final),1e-8)){settle=i<t.length-1?t[i+1]:NaN;break;}}if(y[0]===final)rise=0;else{let lo=y.findIndex(v=>v>=0.1*final),hi=y.findIndex(v=>v>=0.9*final);if(final<0){lo=y.findIndex(v=>v<=.1*final);hi=y.findIndex(v=>v<=.9*final);}if(lo>=0&&hi>=lo)rise=t[hi]-t[lo];}}
+ return{final,peak,min,overshoot,settle,rise};}
+function polyAdd(a,b){const n=Math.max(a.length,b.length),aa=Array(n-a.length).fill(0).concat(a),bb=Array(n-b.length).fill(0).concat(b);return aa.map((v,i)=>v+b[i]);}
+function evaluate(){
+ const num=parseCoeffs($('num').value,'Numerator'),den=parseCoeffs($('den').value,'Denominator');if(den.length<2)throw Error('Denominator must have at least two coefficients (a dynamic system).');if(num.length>den.length)throw Error('This dashboard currently requires a proper transfer function (numerator degree ≤ denominator degree).');
+ const duration=Number($('duration').value),count=Number($('samples').value);if(!Number.isFinite(duration)||duration<=0||duration>200)throw Error('Duration must be between 0 and 200 seconds.');
+ const poles=roots(den),zeros=roots(num),rhp=poles.filter(p=>p.re>1e-6).length,near=poles.some(p=>Math.abs(p.re)<=1e-6),status=rhp?'UNSTABLE':near?'MARGINAL':'STABLE';
+ const response=stepResponse(num,den,duration,count),met=metrics(response,poles),routh=routhTable(den);
+ const dc=den[den.length-1]===0?NaN:num[num.length-1]/den[den.length-1];
+ current={num,den,poles,zeros,status,rhp,response,met,routh,dc,duration,count};
+ return current;
+}
+function complexText(z){if(Math.abs(z.im)<1e-7)return fmt(z.re,4);return fmt(z.re,4)+(z.im<0?' − ':' + ')+fmt(Math.abs(z.im),4)+'j';}
+function renderTable(r,target){const cols=r.table[0].length;let h='<table class="routh"><thead><tr><th>Power</th>';for(let j=0;j<cols;j++)h+='<th>s'+(cols-j)+'</th>';h+='</tr></thead><tbody>';r.table.forEach((row,i)=>{h+='<tr><td>s<sup>'+(r.table.length-1-i)+'</sup></td>';row.forEach(v=>h+='<td>'+fmt(v,5)+'</td>');h+='</tr>'});h+='</tbody></table>';$(target).innerHTML=h;}
+function render(){
+ const s=current;$('formula').textContent='G(s) = ('+s.num.map((v,i)=>fmt(v,5)+(s.num.length-i-1?'s'+(s.num.length-i-1>1?'^'+(s.num.length-i-1):''):'')).join(' + ').replace(/\+ -/g,'− ')+') / ('+s.den.map((v,i)=>fmt(v,5)+(s.den.length-i-1?'s'+(s.den.length-i-1>1?'^'+(s.den.length-i-1):''):'')).join(' + ').replace(/\+ -/g,'− ')+')';
+ const title=$('statusTitle');title.textContent=s.status;title.className='status-title '+s.status.toLowerCase();$('statusDesc').textContent=s.status==='STABLE'?'All poles are in the left half-plane. The natural response decays over time.':s.status==='MARGINAL'?'One or more poles lie on or very close to the imaginary axis. Check repeated poles and sustained oscillations.':'At least one pole is in the right half-plane. The natural response grows with time.';
+ $('rhpCount').textContent=s.rhp;$('orderVal').textContent=s.den.length-1;$('analysisState').textContent='Complete';
+ $('polesMetric').textContent=s.poles.length;$('zerosMetric').textContent=s.zeros.length;$('polesFoot').textContent=s.poles.map(complexText).join(', ')||'No finite poles';$('settlingMetric').textContent=Number.isFinite(s.met.settle)?fmt(s.met.settle,2)+' s':'Not settled';$('overshootMetric').textContent=Number.isFinite(s.met.overshoot)?fmt(s.met.overshoot,1)+'%':'N/A';
+ $('analysisStability').textContent=s.status;$('analysisStability').style.color=s.status==='STABLE'?'var(--green)':s.status==='MARGINAL'?'var(--amber)':'var(--red)';$('analysisPoles').textContent=s.poles.length;$('analysisZeros').textContent=s.zeros.length;$('dcGain').textContent=fmt(s.dc,4);
+ $('poleList').textContent=s.poles.map((p,i)=>'p'+(i+1)+' = '+complexText(p)).join('\n')||'No finite poles';$('zeroList').textContent=s.zeros.map((p,i)=>'z'+(i+1)+' = '+complexText(p)).join('\n')||'No finite zeros';
+ $('finalMetric').textContent=fmt(s.met.final,4);$('peakMetric').textContent=fmt(s.met.peak,4);$('riseMetric').textContent=Number.isFinite(s.met.rise)?fmt(s.met.rise,3)+' s':'N/A';$('settleLarge').textContent=Number.isFinite(s.met.settle)?fmt(s.met.settle,3)+' s':'Not settled';
+ renderTable(s.routh,'routhPreview');renderTable(s.routh,'routhFull');$('routhInterpretation').textContent='First-column sign changes: '+s.routh.changes+'. Estimated right-half-plane roots from Routh test: '+s.routh.changes+'. '+(s.routh.flags.join(' ')||'No special zero-row handling was required.');
+ drawAll();log('Analysis completed: '+s.status+'; '+s.poles.length+' poles, '+s.zeros.length+' zeros.',s.status==='STABLE'?'ok':s.status==='MARGINAL'?'warn':'err');if(s.routh.flags.length)log(s.routh.flags.join(' '),'warn');
+}
+function setupCanvas(canvas){const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(300,Math.floor(rect.width*dpr));canvas.height=Math.max(180,Math.floor(rect.height*dpr));const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w:canvas.width/dpr,h:canvas.height/dpr};}
+function plot(canvasId,series,opts={}){
+ const canvas=$(canvasId);if(!canvas||!canvas.getBoundingClientRect().width)return;const {ctx,w,h}=setupCanvas(canvas),m={l:opts.left||52,r:18,t:18,b:36},pw=w-m.l-m.r,ph=h-m.t-m.b;
+ ctx.clearRect(0,0,w,h);ctx.font='10px ui-sans-serif,system-ui';const allX=series.flatMap(s=>s.x),allY=series.flatMap(s=>s.y).filter(Number.isFinite);if(!allX.length||!allY.length)return;
+ let xmin=opts.xmin??Math.min(...allX),xmax=opts.xmax??Math.max(...allX),ymin=opts.ymin??Math.min(...allY),ymax=opts.ymax??Math.max(...allY);if(xmin===xmax){xmin-=1;xmax+=1}if(ymin===ymax){ymin-=1;ymax+=1}if(opts.padY!==false){const pad=(ymax-ymin)*.12;ymin-=pad;ymax+=pad}
+ const X=x=>m.l+(x-xmin)/(xmax-xmin)*pw,Y=y=>m.t+ph-(y-ymin)/(ymax-ymin)*ph;
+ ctx.strokeStyle=C.grid;ctx.lineWidth=1;ctx.fillStyle=C.text;ctx.textAlign='right';ctx.textBaseline='middle';
+ for(let i=0;i<=4;i++){const y=m.t+ph*i/4,val=ymax-(ymax-ymin)*i/4;ctx.beginPath();ctx.moveTo(m.l,y);ctx.lineTo(w-m.r,y);ctx.stroke();ctx.fillText(fmt(val,2),m.l-8,y);}
+ for(let i=0;i<=5;i++){const x=m.l+pw*i/5,val=xmin+(xmax-xmin)*i/5;ctx.beginPath();ctx.moveTo(x,m.t);ctx.lineTo(x,m.t+ph);ctx.stroke();ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(opts.xformat?opts.xformat(val):fmt(val,2),x,h-m.b+9);}
+ if(opts.xzero!==false&&xmin<0&&xmax>0){ctx.strokeStyle='#7086a5';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(X(0),m.t);ctx.lineTo(X(0),m.t+ph);ctx.stroke();ctx.setLineDash([])}
+ if(opts.yzero&&ymin<0&&ymax>0){ctx.strokeStyle='#7086a5';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(m.l,Y(0));ctx.lineTo(w-m.r,Y(0));ctx.stroke();ctx.setLineDash([])}
+ series.forEach(s=>{ctx.strokeStyle=s.color||C.blue;ctx.fillStyle=s.color||C.blue;ctx.lineWidth=s.width||2;ctx.globalAlpha=s.alpha??1;ctx.beginPath();let started=false;for(let i=0;i<s.x.length;i++){if(!Number.isFinite(s.x[i])||!Number.isFinite(s.y[i])){started=false;continue}const x=X(s.x[i]),y=Y(s.y[i]);if(!started){ctx.moveTo(x,y);started=true}else ctx.lineTo(x,y)}ctx.stroke();if(s.points){for(let i=0;i<s.x.length;i++){ctx.beginPath();ctx.arc(X(s.x[i]),Y(s.y[i]),4,0,Math.PI*2);ctx.fill()}}ctx.globalAlpha=1;});
+ if(opts.xlabel){ctx.fillStyle=C.text;ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(opts.xlabel,m.l+pw/2,h-2)}if(opts.ylabel){ctx.save();ctx.translate(12,m.t+ph/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(opts.ylabel,0,0);ctx.restore()}
+ if(opts.legend){let x=m.l+8,y=m.t+9;ctx.font='10px ui-sans-serif';opts.legend.forEach(l=>{ctx.fillStyle=l.color;ctx.fillRect(x,y,12,3);ctx.fillStyle=C.text;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(l.label,x+17,y+1);x+=Math.max(75,l.label.length*6+25);});}
+}
+function drawPoleZero(canvasId){
+ const s=current,canvas=$(canvasId);if(!canvas||!canvas.getBoundingClientRect().width)return;
+ const points=[...s.poles.map(z=>({...z,type:'pole'})),...s.zeros.map(z=>({...z,type:'zero'}))];let bound=Math.max(1,...points.map(p=>Math.max(Math.abs(p.re),Math.abs(p.im))))*1.25;
+ const {ctx,w,h}=setupCanvas(canvas),m={l:52,r:20,t:20,b:36},pw=w-m.l-m.r,ph=h-m.t-m.b;ctx.clearRect(0,0,w,h);const X=x=>m.l+(x+bound)/(2*bound)*pw,Y=y=>m.t+ph-(y+bound)/(2*bound)*ph;
+ ctx.strokeStyle=C.grid;ctx.fillStyle=C.text;ctx.font='10px system-ui';for(let i=0;i<=4;i++){let v=-bound+2*bound*i/4,x=X(v),y=Y(v);ctx.beginPath();ctx.moveTo(x,m.t);ctx.lineTo(x,m.t+ph);ctx.stroke();ctx.beginPath();ctx.moveTo(m.l,y);ctx.lineTo(w-m.r,y);ctx.stroke();ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(fmt(v,1),x,h-m.b+8);ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText(fmt(bound-2*bound*i/4,1),m.l-8,y)}
+ ctx.strokeStyle='#9fb2cc';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(X(0),m.t);ctx.lineTo(X(0),m.t+ph);ctx.moveTo(m.l,Y(0));ctx.lineTo(w-m.r,Y(0));ctx.stroke();
+ points.forEach(p=>{let x=X(p.re),y=Y(p.im);ctx.strokeStyle=p.type==='pole'?C.red:C.cyan;ctx.fillStyle=p.type==='pole'?C.red:C.cyan;ctx.lineWidth=2.3;if(p.type==='pole'){ctx.beginPath();ctx.moveTo(x-5,y-5);ctx.lineTo(x+5,y+5);ctx.moveTo(x+5,y-5);ctx.lineTo(x-5,y+5);ctx.stroke()}else{ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.stroke()}});
+ ctx.fillStyle=C.text;ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('× poles     ○ zeros',m.l+8,m.t+5);ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText('Real axis',m.l+pw/2,h-2);
+}
+function drawRoot(){
+ const s=current;let all=[];for(let k=0;k<70;k++){const gain=k===0?0:Math.pow(10,-2+4*k/69);const p=polyAdd(s.den,s.num.map(v=>v*gain));all.push({gain,roots:roots(p)});}
+ const n=s.den.length-1,branches=Array.from({length:n},()=>({x:[],y:[],color:[C.blue,C.cyan,C.purple,C.amber,C.green,C.red][0]}));
+ const colors=[C.blue,C.cyan,C.purple,C.amber,C.green,C.red];
+ let prev=s.poles.slice().sort((a,b)=>a.im-b.im||a.re-b.re);prev.forEach((p,i)=>{branches[i].x.push(p.re);branches[i].y.push(p.im);branches[i].color=colors[i%colors.length]});
+ for(let k=1;k<all.length;k++){let rr=all[k].roots,used=new Set();for(let b=0;b<n;b++){let best=-1,dist=Infinity;for(let j=0;j<rr.length;j++)if(!used.has(j)){let d=Math.hypot(rr[j].re-prev[b].re,rr[j].im-prev[b].im);if(d<dist){dist=d;best=j}}if(best>=0){used.add(best);branches[b].x.push(rr[best].re);branches[b].y.push(rr[best].im)}}prev=branches.map(b=>({re:b.x[b.x.length-1],im:b.y[b.y.length-1]}));}
+ const series=branches.map(b=>({x:b.x,y:b.y,color:b.color,width:1.7}));series.push({x:s.poles.map(p=>p.re),y:s.poles.map(p=>p.im),color:C.red,points:true});plot('rootCanvas',series,{xlabel:'Real axis (σ)',ylabel:'Imaginary axis (jω)',xzero:true,yzero:true,legend:branches.map((b,i)=>({color:b.color,label:'Branch '+(i+1)}))});
+}
+function drawBode(){
+ const s=current,ws=Array.from({length:160},(_,i)=>Math.pow(10,-2+5*i/159)),mag=[],phase=[];for(const w of ws){const z={re:0,im:w};const a=polyEval(s.num,z),b=polyEval(s.den,z),v=cdiv(a,b);mag.push(20*Math.log10(Math.max(cabs(v),1e-12)));phase.push(Math.atan2(v.im,v.re)*180/Math.PI);}
+ // Unwrap phase to avoid visual jumps.
+ for(let i=1;i<phase.length;i++){while(phase[i]-phase[i-1]>180)phase[i]-=360;while(phase[i]-phase[i-1]<-180)phase[i]+=360;}
+ const lx=ws.map(Math.log10);plot('bodeMag',[{x:lx,y:mag,color:C.cyan}],{xlabel:'Frequency (rad/s, log scale)',ylabel:'Magnitude (dB)',xformat:v=>'10^'+fmt(v,1)});plot('bodePhase',[{x:lx,y:phase,color:C.purple}],{xlabel:'Frequency (rad/s, log scale)',ylabel:'Phase (deg)',xformat:v=>'10^'+fmt(v,1)});
+}
+function drawAll(){if(!current)return;drawPoleZero('pzCanvas');drawPoleZero('rootCanvas');plot('stepCanvas',[{x:current.response.t,y:current.response.y,color:C.cyan}],{xlabel:'Time (s)',ylabel:'Output'});plot('stepLarge',[{x:current.response.t,y:current.response.y,color:C.cyan}],{xlabel:'Time (s)',ylabel:'Output'});drawRoot();drawBode();}
+function run(){try{$('analysisState').textContent='Analyzing';log('Validating model inputs…');const s=evaluate();render();toast('Analysis complete: '+s.status+'.');}catch(e){$('analysisState').textContent='Error';log(e.message,'err');toast(e.message);}}
+$('runBtn').addEventListener('click',run);$('runTop').addEventListener('click',run);
+$('demoBtn').addEventListener('click',()=>{$('num').value='1';$('den').value='1, 3, 2';$('duration').value='10';run();});
+$('resetBtn').addEventListener('click',()=>{$('num').value='1';$('den').value='1, 3, 2';$('duration').value='10';$('samples').value='500';run();log('Default stable model restored.','ok');});
+
+// System Comparison Functions
+let comparedSystems = [];
+
+function analyzeSystem(num, den, app, name) {
+  try {
+    const duration = 10;
+    const samples = 500;
+    const poles = roots(den);
+    const zeros = roots(num);
+    const rhp = poles.filter(p => p.re > 1e-6).length;
+    const near = poles.some(p => Math.abs(p.re) <= 1e-6);
+    const status = rhp ? 'UNSTABLE' : near ? 'MARGINAL' : 'STABLE';
+    const response = stepResponse(num, den, duration, samples);
+    const met = metrics(response, poles);
+    const routh = routhTable(den);
+    const dc = den[den.length-1] === 0 ? NaN : num[num.length-1] / den[den.length-1];
+    
+    return {
+      name,
+      num, den, poles, zeros, status, rhp, response, met, routh, dc, duration, samples,
+      application: app || 'No application specified',
+      order: den.length - 1
+    };
+  } catch (e) {
+    throw Error(`${name}: ${e.message}`);
+  }
+}
+
+$('compareBtn').addEventListener('click', () => {
+  try {
+    log('Starting system comparison...', 'ok');
+    comparedSystems = [];
+    
+    // System 1 (required)
+    const s1num = $('comp1num').value.trim();
+    const s1den = $('comp1den').value.trim();
+    if (!s1num || !s1den) throw Error('System 1 is required');
+    comparedSystems.push(analyzeSystem(
+      parseCoeffs(s1num, 'System 1 Numerator'),
+      parseCoeffs(s1den, 'System 1 Denominator'),
+      $('comp1app').value.trim(),
+      'System 1'
+    ));
+    
+    // System 2 (required)
+    const s2num = $('comp2num').value.trim();
+    const s2den = $('comp2den').value.trim();
+    if (!s2num || !s2den) throw Error('System 2 is required');
+    comparedSystems.push(analyzeSystem(
+      parseCoeffs(s2num, 'System 2 Numerator'),
+      parseCoeffs(s2den, 'System 2 Denominator'),
+      $('comp2app').value.trim(),
+      'System 2'
+    ));
+    
+    // System 3 (optional)
+    const s3num = $('comp3num').value.trim();
+    const s3den = $('comp3den').value.trim();
+    if (s3num && s3den) {
+      comparedSystems.push(analyzeSystem(
+        parseCoeffs(s3num, 'System 3 Numerator'),
+        parseCoeffs(s3den, 'System 3 Denominator'),
+        $('comp3app').value.trim(),
+        'System 3'
+      ));
+    }
+    
+    // System 4 (optional)
+    const s4num = $('comp4num').value.trim();
+    const s4den = $('comp4den').value.trim();
+    if (s4num && s4den) {
+      comparedSystems.push(analyzeSystem(
+        parseCoeffs(s4num, 'System 4 Numerator'),
+        parseCoeffs(s4den, 'System 4 Denominator'),
+        $('comp4app').value.trim(),
+        'System 4'
+      ));
+    }
+    
+    if (comparedSystems.length < 2) throw Error('At least 2 systems required for comparison');
+    
+    renderComparison();
+    $('comparisonResults').classList.remove('hidden');
+    toast(`Successfully compared ${comparedSystems.length} systems!`);
+    log(`Comparison complete: ${comparedSystems.length} systems analyzed`, 'ok');
+    
+  } catch (e) {
+    log(e.message, 'err');
+    toast(e.message);
+  }
+});
+
+function renderComparison() {
+  const colors = [C.cyan, C.purple, C.amber, C.green];
+  
+  // Build comparison table
+  let tbody = '';
+  
+  // Transfer Function
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">Transfer Function</td>';
+  comparedSystems.forEach(s => {
+    const tfStr = `${s.num.join(',')} / ${s.den.join(',')}`;
+    tbody += `<td style="padding:12px;text-align:center;font-family:monospace;font-size:10px">${tfStr}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // Stability
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">Stability</td>';
+  comparedSystems.forEach(s => {
+    const color = s.status === 'STABLE' ? 'var(--green)' : s.status === 'MARGINAL' ? 'var(--amber)' : 'var(--red)';
+    tbody += `<td style="padding:12px;text-align:center;color:${color};font-weight:bold">${s.status}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // Application
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">Application</td>';
+  comparedSystems.forEach(s => {
+    tbody += `<td style="padding:12px;text-align:center;font-size:11px">${s.application || 'Not specified'}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // System Order
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">System Order</td>';
+  comparedSystems.forEach(s => {
+    tbody += `<td style="padding:12px;text-align:center">${s.order}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // Number of Poles
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">Poles</td>';
+  comparedSystems.forEach(s => {
+    tbody += `<td style="padding:12px;text-align:center">${s.poles.length}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // RHP Poles
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">RHP Poles</td>';
+  comparedSystems.forEach(s => {
+    const color = s.rhp > 0 ? 'var(--red)' : 'var(--green)';
+    tbody += `<td style="padding:12px;text-align:center;color:${color}">${s.rhp}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // DC Gain
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">DC Gain</td>';
+  comparedSystems.forEach(s => {
+    tbody += `<td style="padding:12px;text-align:center">${fmt(s.dc, 3)}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // Settling Time
+  tbody += '<tr style="border-bottom:1px solid var(--line)"><td style="padding:12px;font-weight:bold">Settling Time (s)</td>';
+  comparedSystems.forEach(s => {
+    tbody += `<td style="padding:12px;text-align:center">${Number.isFinite(s.met.settle) ? fmt(s.met.settle, 2) : 'N/A'}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  // Overshoot
+  tbody += '<tr><td style="padding:12px;font-weight:bold">Overshoot (%)</td>';
+  comparedSystems.forEach(s => {
+    tbody += `<td style="padding:12px;text-align:center">${Number.isFinite(s.met.overshoot) ? fmt(s.met.overshoot, 1) : 'N/A'}</td>`;
+  });
+  while (comparedSystems.length < 4) tbody += '<td style="padding:12px;text-align:center;color:var(--muted)">—</td>';
+  tbody += '</tr>';
+  
+  $('comparisonTableBody').innerHTML = tbody;
+  
+  // Build detailed system cards
+  let cardsHTML = '';
+  comparedSystems.forEach((s, i) => {
+    const color = colors[i];
+    const statusColor = s.status === 'STABLE' ? 'var(--green)' : s.status === 'MARGINAL' ? 'var(--amber)' : 'var(--red)';
+    
+    cardsHTML += `
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 style="color:${color}">${s.name}</h2>
+            <p>${s.application}</p>
+          </div>
+          <span class="tag" style="background:${statusColor};color:#000;font-weight:bold">${s.status}</span>
+        </div>
+        <div class="panel-body">
+          <div class="formula" style="margin-bottom:12px">
+            G(s) = ${s.num.join(' + ')} / (${s.den.join(' + ')})
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px">
+            <div><strong>Poles:</strong><br>${s.poles.map(complexText).join('<br>')}</div>
+            <div><strong>Zeros:</strong><br>${s.zeros.length > 0 ? s.zeros.map(complexText).join('<br>') : 'None'}</div>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:11px">
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+              <div><strong>Rise Time:</strong> ${Number.isFinite(s.met.rise) ? fmt(s.met.rise, 3) + ' s' : 'N/A'}</div>
+              <div><strong>Peak:</strong> ${fmt(s.met.peak, 3)}</div>
+              <div><strong>Settling:</strong> ${Number.isFinite(s.met.settle) ? fmt(s.met.settle, 3) + ' s' : 'N/A'}</div>
+              <div><strong>Overshoot:</strong> ${Number.isFinite(s.met.overshoot) ? fmt(s.met.overshoot, 1) + '%' : 'N/A'}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  });
+  
+  $('systemCards').innerHTML = cardsHTML;
+  
+  // Draw comparison step response
+  const series = comparedSystems.map((s, i) => ({
+    x: s.response.t,
+    y: s.response.y,
+    color: colors[i],
+    width: 2
+  }));
+  
+  plot('compareStepCanvas', series, {
+    xlabel: 'Time (s)',
+    ylabel: 'Output',
+    legend: comparedSystems.map((s, i) => ({
+      color: colors[i],
+      label: `${s.name} (${s.status})`
+    }))
+  });
+}
+
+$('loadExamplesBtn').addEventListener('click', () => {
+  $('comp1num').value = '1';
+  $('comp1den').value = '1, 3, 2';
+  $('comp1app').value = 'Motor Speed Control - Stable overdamped system';
+  
+  $('comp2num').value = '4';
+  $('comp2den').value = '1, 0.8, 4';
+  $('comp2app').value = 'Suspension System - Stable underdamped with overshoot';
+  
+  $('comp3num').value = '1';
+  $('comp3den').value = '1, -1';
+  $('comp3app').value = 'Unstable Process - Requires stabilization';
+  
+  $('comp4num').value = '1';
+  $('comp4den').value = '1, 0, 1';
+  $('comp4app').value = 'Oscillatory System - Marginally stable';
+  
+  toast('Example systems loaded! Click Compare Systems.');
+  log('Loaded example systems for comparison', 'ok');
+});
+
+$('clearCompareBtn').addEventListener('click', () => {
+  $('comp1num').value = '';
+  $('comp1den').value = '';
+  $('comp1app').value = '';
+  $('comp2num').value = '';
+  $('comp2den').value = '';
+  $('comp2app').value = '';
+  $('comp3num').value = '';
+  $('comp3den').value = '';
+  $('comp3app').value = '';
+  $('comp4num').value = '';
+  $('comp4den').value = '';
+  $('comp4app').value = '';
+  $('comparisonResults').classList.add('hidden');
+  toast('Comparison cleared');
+  log('Comparison inputs cleared', 'ok');
+});
+
+// Automated Monitoring System
+let monitoringActive = false;
+let monitoringInterval = null;
+let monitoringHistory = [];
+let monitoringStats = { stable: 0, marginal: 0, unstable: 0 };
+let monitoringStartTime = null;
+
+function updateMonitorStats() {
+  const total = monitoringHistory.length;
+  if (total === 0) return;
+  
+  $('totalReadings').textContent = total;
+  $('stableCount').textContent = monitoringStats.stable;
+  $('marginalCount').textContent = monitoringStats.marginal;
+  $('unstableCount').textContent = monitoringStats.unstable;
+  
+  $('stablePercent').textContent = ((monitoringStats.stable / total) * 100).toFixed(1) + '%';
+  $('marginalPercent').textContent = ((monitoringStats.marginal / total) * 100).toFixed(1) + '%';
+  $('unstablePercent').textContent = ((monitoringStats.unstable / total) * 100).toFixed(1) + '%';
+  
+  // Update uptime
+  if (monitoringStartTime) {
+    const elapsed = Math.floor((Date.now() - monitoringStartTime) / 1000);
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    $('monitorUptime').textContent = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+  }
+}
+
+function generateRandomSystem() {
+  // Generate random transfer function for demo
+  const types = [
+    { num: [1], den: [1, 3, 2], desc: 'Stable' },
+    { num: [1], den: [1, 0.5, 1], desc: 'Stable Underdamped' },
+    { num: [1], den: [1, -1], desc: 'Unstable' },
+    { num: [1], den: [1, 0, 1], desc: 'Marginal' },
+    { num: [4], den: [1, 0.8, 4], desc: 'Stable with Overshoot' },
+  ];
+  
+  const selected = types[Math.floor(Math.random() * types.length)];
+  
+  // Add some random variation
+  const variation = 0.9 + Math.random() * 0.2; // 0.9 to 1.1
+  const den = selected.den.map(d => d * variation);
+  
+  return { num: selected.num, den: den };
+}
+
+async function fetchDeviceData() {
+  const source = $('dataSource').value;
+  const endpoint = $('deviceEndpoint').value;
+  
+  try {
+    switch(source) {
+      case 'random':
+        // Demo mode - generate random system
+        return generateRandomSystem();
+        
+      case 'api':
+        // REST API call
+        if (!endpoint) throw Error('API endpoint required');
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        // Expected format: { numerator: [1,2,3], denominator: [1,2,3,4] }
+        return { num: data.numerator, den: data.denominator };
+        
+      case 'websocket':
+        // WebSocket would need separate connection management
+        throw Error('WebSocket requires persistent connection setup');
+        
+      case 'serial':
+        // Serial port via Web Serial API (Chrome only)
+        throw Error('Serial port connection requires user permission and setup');
+        
+      case 'manual':
+      default:
+        // Use current input fields
+        return {
+          num: parseCoeffs($('num').value, 'Numerator'),
+          den: parseCoeffs($('den').value, 'Denominator')
+        };
+    }
+  } catch(e) {
+    throw Error(`Data fetch failed: ${e.message}`);
+  }
+}
+
+function analyzeAndRecord() {
+  try {
+    fetchDeviceData().then(data => {
+      const timestamp = new Date();
+      const analysis = analyzeSystem(data.num, data.den, 'Monitored System', 'Monitor');
+      
+      // Record in history
+      const record = {
+        timestamp,
+        num: data.num,
+        den: data.den,
+        status: analysis.status,
+        poles: analysis.poles,
+        rhp: analysis.rhp,
+        settlingTime: analysis.met.settle,
+        order: analysis.order
+      };
+      
+      monitoringHistory.push(record);
+      
+      // Update stats
+      if (analysis.status === 'STABLE') monitoringStats.stable++;
+      else if (analysis.status === 'MARGINAL') monitoringStats.marginal++;
+      else monitoringStats.unstable++;
+      
+      // Limit history size
+      const maxSamples = parseInt($('maxSamples').value);
+      if (monitoringHistory.length > maxSamples) {
+        const removed = monitoringHistory.shift();
+        // Adjust stats
+        if (removed.status === 'STABLE') monitoringStats.stable--;
+        else if (removed.status === 'MARGINAL') monitoringStats.marginal--;
+        else monitoringStats.unstable--;
+      }
+      
+      // Update displays
+      $('lastUpdate').textContent = timestamp.toLocaleTimeString();
+      updateMonitorStats();
+      updateLiveDisplay(record);
+      updateHistoryTable();
+      updateTimelineChart();
+      
+    }).catch(err => {
+      log(`Monitoring error: ${err.message}`, 'err');
+      addLiveMessage(`❌ Error: ${err.message}`, 'red');
+    });
+    
+  } catch(e) {
+    log(`Monitoring error: ${e.message}`, 'err');
+  }
+}
+
+function updateLiveDisplay(record) {
+  const statusColor = record.status === 'STABLE' ? 'var(--green)' : 
+                      record.status === 'MARGINAL' ? 'var(--amber)' : 'var(--red)';
+  
+  const msg = `[${record.timestamp.toLocaleTimeString()}] G(s)=${record.num.join(',')}/[${record.den.join(',')}] → <span style="color:${statusColor};font-weight:bold">${record.status}</span> (${record.poles.length} poles, ${record.rhp} RHP)`;
+  
+  addLiveMessage(msg);
+}
+
+function addLiveMessage(msg, color = 'var(--text)') {
+  const display = $('liveDataDisplay');
+  const line = document.createElement('div');
+  line.innerHTML = msg;
+  line.style.color = color;
+  line.style.marginBottom = '4px';
+  display.appendChild(line);
+  display.scrollTop = display.scrollHeight;
+  
+  // Keep only last 20 lines
+  while (display.children.length > 20) {
+    display.removeChild(display.firstChild);
+  }
+}
+
+function updateHistoryTable() {
+  const tbody = $('historyTableBody');
+  
+  if (monitoringHistory.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">No data yet</td></tr>';
+    return;
+  }
+  
+  let html = '';
+  monitoringHistory.slice().reverse().forEach((record, i) => {
+    const statusColor = record.status === 'STABLE' ? 'var(--green)' : 
+                        record.status === 'MARGINAL' ? 'var(--amber)' : 'var(--red)';
+    
+    html += `<tr style="border-bottom:1px solid var(--line)">
+      <td style="padding:10px">${monitoringHistory.length - i}</td>
+      <td style="padding:10px;font-size:10px">${record.timestamp.toLocaleTimeString()}</td>
+      <td style="padding:10px;font-family:monospace;font-size:10px">${record.num.join(',')}/[${record.den.join(',')}]</td>
+      <td style="padding:10px;text-align:center;color:${statusColor};font-weight:bold">${record.status}</td>
+      <td style="padding:10px;text-align:center">${record.poles.length}</td>
+      <td style="padding:10px;text-align:center;color:${record.rhp > 0 ? 'var(--red)' : 'var(--green)'}">${record.rhp}</td>
+      <td style="padding:10px;text-align:center">${Number.isFinite(record.settlingTime) ? fmt(record.settlingTime,2)+'s' : 'N/A'}</td>
+    </tr>`;
+  });
+  
+  tbody.innerHTML = html;
+}
+
+function updateTimelineChart() {
+  if (monitoringHistory.length < 2) {
+    $('timelineInfo').textContent = 'Collecting data... (need at least 2 readings)';
+    return;
+  }
+  
+  const canvas = $('timelineCanvas');
+  if (!canvas.getBoundingClientRect().width) return;
+  
+  const {ctx, w, h} = setupCanvas(canvas);
+  const m = {l: 60, r: 20, t: 30, b: 50};
+  const pw = w - m.l - m.r;
+  const ph = h - m.t - m.b;
+  
+  ctx.clearRect(0, 0, w, h);
+  
+  // Draw timeline
+  const timeData = monitoringHistory.map((r, i) => ({
+    x: i,
+    y: r.status === 'STABLE' ? 2 : r.status === 'MARGINAL' ? 1 : 0
+  }));
+  
+  const xScale = pw / (monitoringHistory.length - 1);
+  const yScale = ph / 2;
+  
+  // Background zones
+  ctx.fillStyle = 'rgba(54, 211, 153, 0.1)';
+  ctx.fillRect(m.l, m.t, pw, yScale);
+  ctx.fillStyle = 'rgba(246, 189, 75, 0.1)';
+  ctx.fillRect(m.l, m.t + yScale, pw, yScale/2);
+  ctx.fillStyle = 'rgba(255, 100, 124, 0.1)';
+  ctx.fillRect(m.l, m.t + yScale*1.5, pw, yScale/2);
+  
+  // Draw grid
+  ctx.strokeStyle = C.grid;
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 2; i++) {
+    const y = m.t + ph - (i * ph / 2);
+    ctx.beginPath();
+    ctx.moveTo(m.l, y);
+    ctx.lineTo(m.l + pw, y);
+    ctx.stroke();
+  }
+  
+  // Draw line
+  ctx.strokeStyle = C.cyan;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  timeData.forEach((d, i) => {
+    const x = m.l + d.x * xScale;
+    const y = m.t + ph - (d.y * ph / 2);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  
+  // Draw points
+  timeData.forEach((d, i) => {
+    const x = m.l + d.x * xScale;
+    const y = m.t + ph - (d.y * ph / 2);
+    ctx.fillStyle = d.y === 2 ? C.green : d.y === 1 ? C.amber : C.red;
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  
+  // Labels
+  ctx.fillStyle = C.text;
+  ctx.font = '10px system-ui';
+  ctx.textAlign = 'right';
+  ctx.fillText('STABLE', m.l - 10, m.t + ph/4);
+  ctx.fillText('MARGINAL', m.l - 10, m.t + ph*0.625);
+  ctx.fillText('UNSTABLE', m.l - 10, m.t + ph*0.875);
+  
+  ctx.textAlign = 'center';
+  ctx.fillText('Time →', m.l + pw/2, h - 10);
+  
+  $('timelineInfo').textContent = `Tracking ${monitoringHistory.length} readings. Latest: ${monitoringHistory[monitoringHistory.length-1].status}`;
+}
+
+$('startMonitorBtn').addEventListener('click', () => {
+  if (monitoringActive) return;
+  
+  const interval = parseInt($('monitorInterval').value);
+  const source = $('dataSource').value;
+  
+  monitoringActive = true;
+  monitoringStartTime = Date.now();
+  $('monitorStatus').textContent = 'Running';
+  $('monitorStatus').style.color = 'var(--green)';
+  $('deviceStatus').textContent = source === 'random' ? 'Random Generator' : source === 'manual' ? 'Manual Input' : $('deviceEndpoint').value || 'Not configured';
+  $('startMonitorBtn').disabled = true;
+  $('stopMonitorBtn').disabled = false;
+  $('liveDataDisplay').innerHTML = '';
+  
+  addLiveMessage('🟢 Monitoring started...', 'var(--green)');
+  log(`Monitoring started: ${source} source, ${interval}ms interval`, 'ok');
+  toast('Monitoring started');
+  
+  // Run first analysis immediately
+  analyzeAndRecord();
+  
+  // Start interval
+  monitoringInterval = setInterval(analyzeAndRecord, interval);
+});
+
+$('stopMonitorBtn').addEventListener('click', () => {
+  if (!monitoringActive) return;
+  
+  monitoringActive = false;
+  clearInterval(monitoringInterval);
+  $('monitorStatus').textContent = 'Stopped';
+  $('monitorStatus').style.color = 'var(--muted)';
+  $('startMonitorBtn').disabled = false;
+  $('stopMonitorBtn').disabled = true;
+  
+  addLiveMessage('🔴 Monitoring stopped', 'var(--amber)');
+  log('Monitoring stopped', 'ok');
+  toast('Monitoring stopped');
+});
+
+$('clearMonitorBtn').addEventListener('click', () => {
+  if (monitoringActive) {
+    toast('Stop monitoring first');
+    return;
+  }
+  
+  monitoringHistory = [];
+  monitoringStats = { stable: 0, marginal: 0, unstable: 0 };
+  $('totalReadings').textContent = '0';
+  $('lastUpdate').textContent = 'Never';
+  $('stableCount').textContent = '0';
+  $('marginalCount').textContent = '0';
+  $('unstableCount').textContent = '0';
+  $('stablePercent').textContent = '0%';
+  $('marginalPercent').textContent = '0%';
+  $('unstablePercent').textContent = '0%';
+  $('monitorUptime').textContent = '0s';
+  $('liveDataDisplay').innerHTML = 'History cleared. Start monitoring to collect new data.';
+  updateHistoryTable();
+  
+  const canvas = $('timelineCanvas');
+  const {ctx, w, h} = setupCanvas(canvas);
+  ctx.clearRect(0, 0, w, h);
+  $('timelineInfo').textContent = 'History cleared';
+  
+  log('Monitoring history cleared', 'ok');
+  toast('History cleared');
+});
+
+$('exportHistoryBtn').addEventListener('click', () => {
+  if (monitoringHistory.length === 0) {
+    toast('No data to export');
+    return;
+  }
+  
+  // Generate CSV
+  let csv = 'Timestamp,Numerator,Denominator,Status,Poles,RHP Poles,Settling Time\n';
+  monitoringHistory.forEach(r => {
+    csv += `${r.timestamp.toISOString()},"${r.num.join(',')}","${r.den.join(',')}",${r.status},${r.poles.length},${r.rhp},${Number.isFinite(r.settlingTime)?r.settlingTime:'N/A'}\n`;
+  });
+  
+  // Download
+  const blob = new Blob([csv], {type: 'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `stability-monitor-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  log('Monitoring history exported to CSV', 'ok');
+  toast('History exported as CSV');
+});
+
+// Update uptime every second when monitoring
+setInterval(() => {
+  if (monitoringActive) {
+    updateMonitorStats();
+  }
+}, 1000);
+
+
+$('clearLog').addEventListener('click',()=>{$('log').innerHTML='';log('Console cleared.');});
+$('exportBtn').addEventListener('click',()=>{if(!current){toast('Run analysis before exporting.');return;}const s=current;const data={transferFunction:{numerator:s.num,denominator:s.den},stability:s.status,poles:s.poles.map(complexText),zeros:s.zeros.map(complexText),rightHalfPlanePoles:s.rhp,dcGain:s.dc,stepMetrics:{finalValue:s.met.final,peakValue:s.met.peak,overshootPercent:s.met.overshoot,settlingTime:s.met.settle,riseTime:s.met.rise},routhTable:s.routh.table,routhSignChanges:s.routh.changes};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='stability-analysis-results.json';a.click();URL.revokeObjectURL(url);log('Results exported as JSON.','ok');});
+$('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-view]');if(!b)return;document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.nav-view').forEach(x=>x.classList.toggle('active',x.id==='view-'+b.dataset.view));requestAnimationFrame(drawAll);});
+window.addEventListener('resize',()=>{clearTimeout(window.__resizeDraw);window.__resizeDraw=setTimeout(drawAll,120);});
+log('StabilityLab initialized. Browser-based numerical engine ready.','ok');log('Default model: G(s) = 1 / (s² + 3s + 2).');run();
+
+// Register service worker for offline functionality and PWA
+if('serviceWorker' in navigator){
+ window.addEventListener('load',()=>{
+  navigator.serviceWorker.register('./sw.js')
+   .then(reg=>console.log('Service Worker registered'))
+   .catch(err=>console.log('Service Worker registration failed'));
+ });
+}
+})();
+</script>
+</body>
+</html>
